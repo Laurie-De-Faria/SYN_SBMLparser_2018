@@ -38,7 +38,7 @@ typedef struct specie_s
 
 typedef struct reac_specie_s
 {
-    int nb;
+    char *nb;
     char *specie;
 }reac_specie_t;
 

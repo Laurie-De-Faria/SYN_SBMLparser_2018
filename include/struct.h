@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2019
-** SYN_SBMLparser_2018
+** SYN_SBML_parser_2018
 ** File description:
 ** Structures - Laurie De Faria
 */
@@ -11,11 +11,17 @@
 typedef struct command_s
 {
     int flag_i;
-    int flag_json;
     int flag_e;
-    char *name;
+    int flag_json;
     char *id;
+    char *file;
 }command_t;
+
+typedef struct chainlist_s
+{
+    void *ob;
+    struct chainlist_s *next;
+}chainlist_t;
 
 typedef struct compartment_s
 {
@@ -23,11 +29,27 @@ typedef struct compartment_s
     char *id;
 }compartment_t;
 
-typedef struct chainlist_s
+typedef struct specie_s
 {
-    void *obj;
-    struct chainlist_s *next;
-}chainlist_t;
+    char *compartment;
+    char *name;
+    char *id;
+}specie_t;
+
+typedef struct reac_specie_s
+{
+    int nb;
+    char *specie;
+}reac_specie_t;
+
+typedef struct reaction_s
+{
+    int reversible;
+    char *name;
+    char *id;
+    chainlist_t *reactants;
+    chainlist_t *products;
+}reaction_t;
 
 typedef struct file_s
 {

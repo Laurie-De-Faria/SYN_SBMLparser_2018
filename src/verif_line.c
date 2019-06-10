@@ -17,6 +17,7 @@ int verif_first_line(char const *line)
     else if (line[len - 2] != '?' || line[len - 1] != '>')
         return (ERROR);
     //verif version, encoding, standalone présents
+    return (0);
 }
 
 int verif_second_line(char const *line)
@@ -28,4 +29,17 @@ int verif_second_line(char const *line)
     else if (line[len - 1] != '>' || line[len - 2] != ' ')
         return (ERROR);
     //verif version, level, xmlns présents
+    return (0);
+}
+
+int verif_model(char const *line)
+{
+    int len = my_strlen(line);
+
+    if (my_strncmp("<model ", line, 7) != 1)
+        return (ERROR);
+    else if (line[len - 2] != ' ' || line[len - 1] != '>')
+        return (ERROR);
+    //verif name et id présents
+    return (0);
 }

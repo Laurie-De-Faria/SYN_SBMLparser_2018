@@ -48,10 +48,13 @@ int main(int ac, char *const *av)
         free(command->file), free(command);
         return (0);
     }
-    file = stock_file(command->file);
+    file = manage_file(command->file);
     if (!file) {
         // free command
         return (ERROR);
     }
+    // tri ordre alpha
     // fonctions affichage selon les flags
+    //free command
+    return (0);
 }

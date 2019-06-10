@@ -7,55 +7,50 @@
 
 #include <stdlib.h>
 #include "my.h"
-static const int ERROR = 84;
+#include "sbml_parser.h"
 
 static int verif_elements(char const *line, char *const *elements)
 {
+    if (!line || !elements)
+        return (ERROR);
     for (int i = 0; elements[i]; i++) {
-        if (search_str(line, elements) != 1)
+        if (search_str(line, elements[i]) != 1)
             return (0);
     }
     return (1);
 }
 
-int verif_first_line(char const *line)
+static char *read_line(FILE *fd)
 {
-    int len = my_strlen(line);
-    char **elements = {"version=", "encoding=", "standalone=", NULL};
+    char *line = NULL;
+    size_t useless = 0;
 
-    if (my_strncmp("<?xml ", line, 6) != 1)
-        return (ERROR);
-    else if (line[len - 2] != '?' || line[len - 1] != '>')
-        return (ERROR);
-    if (verif_elements(line, elements) != 1)
-        return (ERROR);
-    return (0);
+    if (getline(&line, &useless, fd) == 0)
+            return (NULL);
+    line[my_strlen(line) - 1] = '\0';
+    return (line);
 }
 
-int verif_second_line(char const *line)
+int verif_first_line(FILE *fd)
 {
-    int len = my_strlen(line);
-    char **elements = {"version=", "xmlns=", "level=", NULL};
+    char **elements = malloc(sizeof(char *) * 4);
+    char *line = NULL;
+    int len = 0;
 
-    if (my_strncmp("<sbml ", line, 6) != 1)
+    elements[0] = "version=";
+    elements[1] = "encoding=";
+    elements[2] = "standalone=";
+    elements[3] = NULL;
+    line = read_line(fd);
+    if (!line)
         return (ERROR);
-    else if (line[len - 1] != '>' || line[len - 2] != ' ')
+    len = my_strlen(line);
+    if (my_strncmp("<?xml ", line, 6) != 1) {
+        return (ERROR);
+    } else if (line[len - 2] != '?' || line[len - 1] != '>')
         return (ERROR);
     if (verif_elements(line, elements) != 1)
         return (ERROR);
-    return (0);
-}
-
-int verif_model(char const *line)
-{
-    int len = my_strlen(line);
-    char **elements = {"name=", "id=", NULL};
-
-    if (my_strncmp("<model ", line, 7) != 1)
-        return (ERROR);
-    else if (line[len - 2] != ' ' || line[len - 1] != '>')
-        return (ERROR);
-    if (verif_elements(line, elements) != 1)
-        return (ERROR);
+    free(elements);
     return (0);
 }

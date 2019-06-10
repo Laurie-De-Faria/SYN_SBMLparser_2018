@@ -6,7 +6,17 @@
 ##
 
 SRC	=	src/main.c 	\
+		src/manage_file.c 	\
 		src/parsing_command.c 	\
+		src/parsing_tag.c 	\
+		src/verif_line.c 	\
+		src/stock_info/stock_compartment.c 	\
+		src/stock_info/stock_model.c 	\
+		src/stock_info/stock_one_tag.c 	\
+		src/stock_info/stock_reaction.c 	\
+		src/stock_info/stock_sbml.c 	\
+		src/stock_info/stock_specie.c 	\
+		src/stock_info/stock_specieref.c 	\
 
 SRCLIB	=	lib/my/my_strdup.c	\
 		lib/my/my_strlen.c	\
@@ -15,7 +25,6 @@ SRCLIB	=	lib/my/my_strdup.c	\
 		lib/my/my_putstr.c 	\
 		lib/my/my_strncmp.c 	\
 		lib/my/search_str.c 	\
-		#lib/my/my_str_to_word_array.c 	\
 
 OBJ	=	$(SRC:.c=.o)
 

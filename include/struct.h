@@ -17,6 +17,19 @@ typedef struct command_s
     char *file;
 }command_t;
 
+typedef struct sbml_s
+{
+    char *xmlns;
+    char *version;
+    char *level;
+}sbml_t;
+
+typedef struct model_s
+{
+    char *id;
+    char *name;
+}model_t;
+
 typedef struct chainlist_s
 {
     void *ob;
@@ -56,6 +69,8 @@ typedef struct file_s
     chainlist_t *compartments;
     chainlist_t *species;
     chainlist_t *reactions;
+    model_t *model;
+    sbml_t *sbml;
 }file_t;
 
 #endif /* !STRUCT_H_ */

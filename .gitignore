@@ -4,3 +4,5 @@
 .vscode/*
 *#
 SBMLparser
+main_requirement.c
+a.out

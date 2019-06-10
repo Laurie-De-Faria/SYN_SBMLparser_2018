@@ -6,7 +6,6 @@
 */
 
 #include <stdlib.h>
-#include <stdio.h>//eff
 
 static int determine_len(char *tag)
 {

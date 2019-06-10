@@ -31,7 +31,7 @@ int stock_model(file_t *file, char **tag);
 int stock_reaction(file_t *file, char **tag);
 int stock_sbml(file_t *file, char **tag);
 int stock_specie(file_t *file, char **tag);
-int stock_specieref(file_t *file, char **tag);
+int stock_specieref(file_t *file, char **tag, int product);
 char *stock_one_tag(char *tag);
 
 // -- PARSING -- //

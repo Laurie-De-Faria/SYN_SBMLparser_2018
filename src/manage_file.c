@@ -9,15 +9,32 @@
 #include "sbml_parser.h"
 #include "my.h"
 
+static int find_element2(file_t *file, char const *line, char **tag)
+{
+    static int product = -1;
+
+    while (*line == ' ' || *line == '\t')
+            line++;
+    if (my_strncmp("<listOfReactants>", line, 17) == 1) {
+        product = 0;
+    } else if (my_strncmp("<listOfProducts>", line, 16) == 1)
+        product = 1;
+    if (my_strncmp("<speciesReference ", line, 18) == 1) {
+        return (stock_specieref(file, tag, product));
+    }
+}
+
 static int find_element(file_t *file, char const *line, char **tag)
 {
-    char *elements[7] = {"<sbml ", "<model ", "<compartment ", "<species ",\
-                        "<reaction ", "<speciesReference ", NULL};
-    int (*listFunctions[6])(file_t *, char **) = {stock_sbml, stock_model,
-        stock_compartment, stock_specie, stock_reaction, stock_specieref};
+    char *elements[6] = {"<sbml ", "<model ", "<compartment ", "<species ",\
+                        "<reaction ", NULL};
+    int (*listFunctions[5])(file_t *, char **) = {stock_sbml, stock_model,
+        stock_compartment, stock_specie, stock_reaction};
     int return_value = 0;
 
     for (int i = 0; elements[i]; i++) {
+        while (*line == ' ' || *line == '\t')
+            line++;
         if (my_strncmp(elements[i], line, my_strlen(elements[i])) == 1)
             return_value = listFunctions[i](file, tag);
         if (return_value == ERROR) {
@@ -25,6 +42,8 @@ static int find_element(file_t *file, char const *line, char **tag)
             return (ERROR);
         }
     }
+    find_element2(file, line, tag);
+    return (0);
 }
 
 // ATTENTION : TOO LONG FUNCTION
@@ -40,6 +59,7 @@ static file_t *stock_file(FILE *fd)
     while (getline(&line, &useless, fd) > 0) {
         line[my_strlen(line) - 1] = '\0';
         tags = parsing_tag(line);
+        printf("--------Line:%s\n", line);//eff
         if (!tags) {
             // free file and line + close fd
             return (NULL);
@@ -74,6 +94,7 @@ file_t *manage_file(char *name_file)
     if (verif_line_one(fd) == ERROR)
         return (NULL);
     file = stock_file(fd);
+    printf("File compartment id:%s\n", ((compartment_t *)file->compartments)->id);//eff
     if (!file) {
         fclose(fd);
         return (NULL);

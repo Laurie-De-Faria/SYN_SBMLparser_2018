@@ -57,7 +57,7 @@ typedef struct reac_specie_s
 
 typedef struct reaction_s
 {
-    int reversible;
+    char *reversible;
     char *name;
     char *id;
     chainlist_t *reactants;
